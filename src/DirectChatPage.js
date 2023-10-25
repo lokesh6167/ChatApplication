@@ -14,6 +14,21 @@ const ChatPage = () => {
     userSecret: "lokesh@123"
   }
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const chatIDFromURL = urlParams.get('chatId');
+
+  useEffect(() => {
+    const openChatByChatID = async () => {
+      try {
+        await getOrCreateChat(creds, { is_direct_chat: false, title: chatIDFromURL, usernames: [] });
+        console.log('Opened chat with chatID:', chatID);
+      } catch (error) {
+        console.error('Error opening chat:', error);
+      }
+    };
+    openChatByChatID();
+  }, [creds, chatID]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       syncChatList(creds);
